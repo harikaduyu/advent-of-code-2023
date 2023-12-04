@@ -1,6 +1,6 @@
 import os
 from typing import List
-from utils import readlines
+from utils import read_input_lines
 
 
 def part1(lines: List[str]) -> int:
@@ -55,27 +55,16 @@ def part2(lines: List[str]) -> int:
 
 
 if __name__ == "__main__":
-    test_lines = ["1abc2", "pqr3stu8vwx", "a1b2c3d4e5f", "treb7uchet"]
-    test = part1(test_lines)
-    print("test: ", test)
+    example_1 = part1(read_input_lines(example=1))
+    assert example_1 == 142
 
-    day_string = __file__.split("/")[-1].split(".py")[0]
-    lines = readlines(day_string)
+    lines = read_input_lines()
     result = part1(lines)
-    print("result: ", result)
+    print("Part 1: ", result)
 
-    part2_test_lines = [
-        "two1nine",
-        "eightwothree",
-        "abcone2threexyz",
-        "xtwone3four",
-        "4nineeightseven2",
-        "zoneight234",
-        "7pqrstsixteen",
-    ]
+    example_2 = part2(read_input_lines(example=2))
+    assert example_2 == 281
 
-    test = part2(part2_test_lines)
-    print("part 2 test: ", test)
-    lines = readlines(day_string)
-    result_2 = part2(lines)
-    print("result_2: ", result_2)
+    lines = read_input_lines()
+    result = part2(lines)
+    print("Part 2: ", result)

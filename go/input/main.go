@@ -70,7 +70,7 @@ func getInput(day int, cookie string) {
 	}
 	dirname := filepath.Dir(cur_filename)
 	// write to file
-	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d.txt", day))
+	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d/Q_input.txt", day))
 
 	writeToFile(filename, body)
 

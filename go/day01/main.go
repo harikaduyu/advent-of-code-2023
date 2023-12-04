@@ -33,6 +33,8 @@ func getKeys(m map[string]string) []string {
 func extractDigitsFromWords(line string) string {
 
 	for _, word := range getKeys(wordToDigit) {
+		// 😈 replace the word digit with number but keep 1st and last character
+		// because sometimes they overlap, like "eightwo"
 		replaceString := string([]rune(word)[0]) + wordToDigit[word] + word[len(word)-1:]
 		line = strings.Replace(line, word, replaceString, -1)
 	}

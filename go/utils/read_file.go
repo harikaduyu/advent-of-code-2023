@@ -30,13 +30,13 @@ func dirName() string {
 func ReadInput(day int) string {
 	// write to file
 	dirname := dirName()
-	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d.txt", day))
+	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d/Q_input.txt", day))
 	return readFile(filename)
 }
 
 func ReadExampleInput(day int, example int) string {
 
 	dirname := dirName()
-	filename := filepath.Join(dirname, "..", fmt.Sprintf("/day%02d/example_%d.txt", day, example))
+	filename := filepath.Join(dirname, "..", fmt.Sprintf("/inputs/day%02d/example_%d.txt", day, example))
 	return readFile(filename)
 }
