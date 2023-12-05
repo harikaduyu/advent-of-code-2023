@@ -21,18 +21,9 @@ var wordToDigit = map[string]string{
 	"zero":  "0",
 }
 
-func getKeys(m map[string]string) []string {
-	keys := make([]string, 0, len(m))
-
-	for k := range m {
-		keys = append(keys, k)
-	}
-	return keys
-}
-
 func extractDigitsFromWords(line string) string {
 
-	for _, word := range getKeys(wordToDigit) {
+	for _, word := range utils.GetKeys(wordToDigit) {
 		// 😈 replace the word digit with number but keep 1st and last character
 		// because sometimes they overlap, like "eightwo"
 		replaceString := string([]rune(word)[0]) + wordToDigit[word] + word[len(word)-1:]

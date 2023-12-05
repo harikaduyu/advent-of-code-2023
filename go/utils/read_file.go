@@ -34,9 +34,9 @@ func ReadInput(day int) string {
 	return readFile(filename)
 }
 
-func ReadExampleInput(day int, example int) string {
+func ReadExampleInput(day int, part int) string {
 
 	dirname := dirName()
-	filename := filepath.Join(dirname, "..", fmt.Sprintf("/inputs/day%02d/example_%d.txt", day, example))
+	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d/example_%d.txt", day, part))
 	return readFile(filename)
 }
