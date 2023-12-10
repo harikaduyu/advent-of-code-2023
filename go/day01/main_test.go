@@ -20,7 +20,7 @@ func TestResult(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		input := utils.ReadExampleInput(day, tc.part)
+		input := utils.ReadExampleInput(tc.part)
 		t.Run(fmt.Sprintf("Input: %s", input), func(t *testing.T) {
 			result := result(input, tc.part)
 

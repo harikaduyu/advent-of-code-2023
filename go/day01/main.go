@@ -67,7 +67,7 @@ func result(input string, part int) int {
 }
 
 func main() {
-	input := utils.ReadInput(1)
+	input := utils.ReadInput()
 	result_1 := result(input, 1)
 	fmt.Println("Part1:", result_1)
 	result_2 := result(input, 2)

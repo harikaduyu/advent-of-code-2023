@@ -7,11 +7,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var day = 2
-
 func TestPart1(t *testing.T) {
 
-	input := utils.ReadExampleInput(day, 1)
+	input := utils.ReadExampleInput(1)
 	gamesRounds := extractGamesRounds(input)
 
 	assert.Equal(t, 8, part1(gamesRounds))
@@ -19,7 +17,7 @@ func TestPart1(t *testing.T) {
 
 func TestPart2(t *testing.T) {
 
-	input := utils.ReadExampleInput(day, 1)
+	input := utils.ReadExampleInput(1)
 	gamesRounds := extractGamesRounds(input)
 
 	assert.Equal(t, 2286, part2(gamesRounds))

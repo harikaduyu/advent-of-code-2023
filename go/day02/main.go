@@ -14,7 +14,7 @@ type Round struct {
 var bagContents = Round{12, 13, 14}
 
 func extractRound(batch string) Round {
-	round := Round{0, 0, 0}
+	var round Round
 	for _, c := range strings.Split(batch, ",") {
 		var cubes int
 		var color string
@@ -95,7 +95,7 @@ func part1(gamesRounds map[int][]Round) int {
 }
 
 func getPossibleBagContents(gamesRounds []Round) Round {
-	possibleBagContents := Round{0, 0, 0}
+	var possibleBagContents Round
 	for _, round := range gamesRounds {
 		if round.Blue > possibleBagContents.Blue {
 			possibleBagContents.Blue = round.Blue
@@ -121,7 +121,7 @@ func part2(gamesRounds map[int][]Round) int {
 
 func main() {
 
-	input := utils.ReadInput(2)
+	input := utils.ReadInput()
 	gamesRounds := extractGamesRounds(input)
 	result_1 := part1(gamesRounds)
 	fmt.Println("Part1:", result_1)
