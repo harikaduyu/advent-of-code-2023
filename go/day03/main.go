@@ -11,9 +11,11 @@ import (
 func hasSymbolNearby(lines []string, i, j int) bool {
 	for x := i - 1; x <= i+1; x++ {
 		for y := j - 1; y <= j+1; y++ {
-			if x >= 0 && x < len(lines) && y >= 0 && y < len(lines[x]) && !(x == i && y == j) {
-				if char := rune(lines[x][y]); !unicode.IsDigit(char) && char != '.' {
-					return true
+			if !(x == i && y == j) {
+				if x >= 0 && x < len(lines) && y >= 0 && y < len(lines[x]) {
+					if char := rune(lines[x][y]); !unicode.IsDigit(char) && char != '.' {
+						return true
+					}
 				}
 			}
 		}
@@ -21,16 +23,45 @@ func hasSymbolNearby(lines []string, i, j int) bool {
 	return false
 }
 
-func part1(input string) int {
+type Position struct {
+	x, y int
+}
+
+func checkStarNearby(lines []string, i, j int) (Position, bool) {
+	for x := i - 1; x <= i+1; x++ {
+		for y := j - 1; y <= j+1; y++ {
+			if !(x == i && y == j) {
+				if x >= 0 && x < len(lines) && y >= 0 && y < len(lines[x]) {
+					if char := lines[x][y]; char == '*' {
+						return Position{x, y}, true
+					}
+				}
+			}
+		}
+	}
+	return Position{-1, -1}, false
+}
+
+func result(input string) (int, int) {
+
 	lines := strings.Split(input, "\n")
-	var currentNum int
-	var totalNums int
-	var symbolNearby bool
+	currentNum := 0
+	totalNums := 0
+	symbolNearby := false
+	starMap := make(map[Position][]int)
+	starNearby := Position{}
+	hasStarNearby := false
+	totalGearRatio := 0
 	for i, line := range lines {
 		for j, char := range line {
 			if unicode.IsDigit(char) {
 				currentNum = (currentNum * 10) + int(char-'0')
 				symbolNearby = symbolNearby || hasSymbolNearby(lines, i, j)
+				Pos, exists := checkStarNearby(lines, i, j)
+				if exists {
+					starNearby = Pos
+					hasStarNearby = exists
+				}
 
 			}
 			// We are at the end of the number if the current char is not digit
@@ -40,20 +71,32 @@ func part1(input string) int {
 					totalNums += currentNum
 					symbolNearby = false
 				}
+				if hasStarNearby && currentNum > 0 {
+					starMap[starNearby] = append(starMap[starNearby], currentNum)
+				}
 				currentNum = 0
+				hasStarNearby = false
 			}
 		}
 	}
-	return totalNums
+	for _, gears := range starMap {
+		if len(gears) == 2 {
+			gr := 1
+			for _, gear := range gears {
+				gr *= gear
+			}
+			totalGearRatio += gr
+		}
+
+	}
+
+	return totalNums, totalGearRatio
 }
-
-// func part2(input string) int {
-
-// }
 
 func main() {
 
 	input := utils.ReadInput()
-	res1 := part1(input)
+	res1, res2 := result(input)
 	fmt.Println("Part1:", res1)
+	fmt.Println("Part2:", res2)
 }
