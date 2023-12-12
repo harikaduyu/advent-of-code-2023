@@ -133,7 +133,6 @@ func part2Reversed(seeds []int, maps [][]MapDesc) int {
 
 func main() {
 
-	// input := utils.ReadExampleInput(1)
 	input := utils.ReadInput()
 	startTime := time.Now()
 
