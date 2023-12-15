@@ -9,7 +9,7 @@ import (
 	"github.com/harikaduyu/advent-of-code-2023/go/utils"
 )
 
-type MapDesc struct {
+type mapDesc struct {
 	DestRangeStart, SourceRangeStart, RangeLength int
 }
 
@@ -22,19 +22,19 @@ func convertStringSliceToInt(s []string) []int {
 	return integers
 }
 
-func parseMap(batch string) []MapDesc {
+func parseMap(batch string) []mapDesc {
 	lines := strings.Split(batch, "\n")
-	mDescs := make([]MapDesc, 2)
+	mDescs := make([]mapDesc, 2)
 	for _, line := range lines[1:] {
 		ints := convertStringSliceToInt(strings.Fields(line))
-		mDesc := MapDesc{ints[0], ints[1], ints[2]}
+		mDesc := mapDesc{ints[0], ints[1], ints[2]}
 		mDescs = append(mDescs, mDesc)
 	}
 	return mDescs
 }
 
-func parse(input string) ([]int, [][]MapDesc) {
-	maps := make([][]MapDesc, 7)
+func parse(input string) ([]int, [][]mapDesc) {
+	maps := make([][]mapDesc, 7)
 	batches := strings.Split(input, "\n\n")
 
 	seedsStr := strings.Fields(strings.Split(batches[0], ": ")[1])
@@ -47,7 +47,7 @@ func parse(input string) ([]int, [][]MapDesc) {
 	return seeds, maps
 }
 
-func findValFromMapDescs(seed int, mapDescs []MapDesc) int {
+func findValFromMapDescs(seed int, mapDescs []mapDesc) int {
 	item := seed
 	for _, md := range mapDescs {
 		if item >= md.SourceRangeStart && item < md.SourceRangeStart+md.RangeLength {
@@ -59,7 +59,7 @@ func findValFromMapDescs(seed int, mapDescs []MapDesc) int {
 }
 
 // This is practically the same thing as above but for the reverse lookup
-func findKeyFromMapDescs(seed int, mapDescs []MapDesc) int {
+func findKeyFromMapDescs(seed int, mapDescs []mapDesc) int {
 	item := seed
 	for _, md := range mapDescs {
 		if item >= md.DestRangeStart && item < md.DestRangeStart+md.RangeLength {
@@ -69,7 +69,7 @@ func findKeyFromMapDescs(seed int, mapDescs []MapDesc) int {
 	return item
 }
 
-func findLocation(seed int, maps [][]MapDesc) int {
+func findLocation(seed int, maps [][]mapDesc) int {
 	item := seed
 	for _, m := range maps {
 		item = findValFromMapDescs(item, m)
@@ -77,7 +77,7 @@ func findLocation(seed int, maps [][]MapDesc) int {
 	return item
 }
 
-func findSeed(location int, maps [][]MapDesc) int {
+func findSeed(location int, maps [][]mapDesc) int {
 
 	item := location
 	for i := len(maps) - 1; i >= 0; i-- {
@@ -86,7 +86,7 @@ func findSeed(location int, maps [][]MapDesc) int {
 	return item
 }
 
-func part1(seeds []int, maps [][]MapDesc) int {
+func part1(seeds []int, maps [][]mapDesc) int {
 	minLocation := 999999999999999999
 	for _, seed := range seeds {
 		location := findLocation(seed, maps)
@@ -97,7 +97,7 @@ func part1(seeds []int, maps [][]MapDesc) int {
 	return minLocation
 }
 
-func part2(seeds []int, maps [][]MapDesc) int {
+func part2(seeds []int, maps [][]mapDesc) int {
 	minLocation := 999999999999999999
 
 	for i := 1; i < len(seeds); i += 2 {
@@ -119,7 +119,7 @@ func part2(seeds []int, maps [][]MapDesc) int {
 
 // The optimization here is we do a reverse lookup starting
 // from the location zero
-func part2Reversed(seeds []int, maps [][]MapDesc) int {
+func part2Reversed(seeds []int, maps [][]mapDesc) int {
 	for location := 0; ; location++ {
 		possibleSeed := findSeed(location, maps)
 		for i := 1; i < len(seeds); i += 2 {

@@ -7,14 +7,14 @@ import (
 	"github.com/harikaduyu/advent-of-code-2023/go/utils"
 )
 
-type Round struct {
+type round struct {
 	Red, Green, Blue int
 }
 
-var bagContents = Round{12, 13, 14}
+var bagContents = round{12, 13, 14}
 
-func extractRound(batch string) Round {
-	var round Round
+func extractRound(batch string) round {
+	var round round
 	for _, c := range strings.Split(batch, ",") {
 		var cubes int
 		var color string
@@ -33,10 +33,10 @@ func extractRound(batch string) Round {
 	return round
 }
 
-func extractRounds(line string) []Round {
+func extractRounds(line string) []round {
 	splitGame := strings.Split(line, ":")[1]
 	stringBatches := strings.Split(splitGame, ";")
-	var rounds []Round
+	var rounds []round
 	for _, batch := range stringBatches {
 		round := extractRound(batch)
 		rounds = append(rounds, round)
@@ -54,14 +54,14 @@ func extractGameNumber(line string) (int, error) {
 	return gameNumber, nil
 }
 
-func isRoundPossible(round Round) bool {
+func isRoundPossible(round round) bool {
 	return round.Red <= bagContents.Red && round.Green <= bagContents.Green && round.Blue <= bagContents.Blue
 
 }
 
-func extractGamesRounds(input string) map[int][]Round {
+func extractGamesRounds(input string) map[int][]round {
 	lines := strings.Split(input, "\n")
-	gamesRounds := make(map[int][]Round, len(lines))
+	gamesRounds := make(map[int][]round, len(lines))
 	for _, line := range lines {
 		gameNumber, err := extractGameNumber(line)
 		if err != nil {
@@ -72,7 +72,7 @@ func extractGamesRounds(input string) map[int][]Round {
 	return gamesRounds
 }
 
-func isGamePossible(rounds []Round) bool {
+func isGamePossible(rounds []round) bool {
 	gamePossible := true
 	for _, round := range rounds {
 		if !isRoundPossible(round) {
@@ -82,7 +82,7 @@ func isGamePossible(rounds []Round) bool {
 	return gamePossible
 }
 
-func part1(gamesRounds map[int][]Round) int {
+func part1(gamesRounds map[int][]round) int {
 	total := 0
 
 	for gameNumber := range gamesRounds {
@@ -94,8 +94,8 @@ func part1(gamesRounds map[int][]Round) int {
 
 }
 
-func getPossibleBagContents(gamesRounds []Round) Round {
-	var possibleBagContents Round
+func getPossibleBagContents(gamesRounds []round) round {
+	var possibleBagContents round
 	for _, round := range gamesRounds {
 		if round.Blue > possibleBagContents.Blue {
 			possibleBagContents.Blue = round.Blue
@@ -110,7 +110,7 @@ func getPossibleBagContents(gamesRounds []Round) Round {
 	return possibleBagContents
 }
 
-func part2(gamesRounds map[int][]Round) int {
+func part2(gamesRounds map[int][]round) int {
 	sumPower := 0
 	for gameNumber := range gamesRounds {
 		minPossible := getPossibleBagContents(gamesRounds[gameNumber])

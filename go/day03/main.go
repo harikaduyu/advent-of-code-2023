@@ -23,23 +23,23 @@ func hasSymbolNearby(lines []string, i, j int) bool {
 	return false
 }
 
-type Position struct {
+type position struct {
 	x, y int
 }
 
-func checkStarNearby(lines []string, i, j int) (Position, bool) {
+func checkStarNearby(lines []string, i, j int) (position, bool) {
 	for x := i - 1; x <= i+1; x++ {
 		for y := j - 1; y <= j+1; y++ {
 			if !(x == i && y == j) {
 				if x >= 0 && x < len(lines) && y >= 0 && y < len(lines[x]) {
 					if char := lines[x][y]; char == '*' {
-						return Position{x, y}, true
+						return position{x, y}, true
 					}
 				}
 			}
 		}
 	}
-	return Position{-1, -1}, false
+	return position{-1, -1}, false
 }
 
 func result(input string) (int, int) {
@@ -48,8 +48,8 @@ func result(input string) (int, int) {
 	currentNum := 0
 	totalNums := 0
 	symbolNearby := false
-	starMap := make(map[Position][]int)
-	starNearby := Position{}
+	starMap := make(map[position][]int)
+	starNearby := position{}
 	hasStarNearby := false
 	totalGearRatio := 0
 	for i, line := range lines {

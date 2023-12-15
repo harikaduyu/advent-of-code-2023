@@ -10,7 +10,7 @@ import (
 	"github.com/harikaduyu/advent-of-code-2023/go/utils"
 )
 
-type Hand struct {
+type hand struct {
 	Bid, Score int
 	Cards      string
 }
@@ -96,8 +96,8 @@ func getScore(cards string, part int) int {
 	return score
 }
 
-func parseHand(line string, part int) Hand {
-	h := Hand{}
+func parseHand(line string, part int) hand {
+	h := hand{}
 	splitted := strings.Fields(line)
 	h.Cards = splitted[0]
 	h.Bid, _ = strconv.Atoi(splitted[1])
@@ -105,8 +105,8 @@ func parseHand(line string, part int) Hand {
 	return h
 }
 
-func parse(input string, part int) []Hand {
-	hands := make([]Hand, 0)
+func parse(input string, part int) []hand {
+	hands := make([]hand, 0)
 	lines := strings.Split(input, "\n")
 	for _, line := range lines {
 		hands = append(hands, parseHand(line, part))
@@ -114,7 +114,7 @@ func parse(input string, part int) []Hand {
 	return hands
 }
 
-func result(hands []Hand) int {
+func result(hands []hand) int {
 	totalWinnings := 0
 	sort.Slice(hands, func(i, j int) bool {
 		return hands[i].Score <= hands[j].Score
