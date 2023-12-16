@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"regexp"
 	"strings"
 	"time"
@@ -83,7 +82,7 @@ func gcd(a, b int) int {
 }
 
 func lcm(a, b int) int {
-	return int(math.Abs(float64(a*b)) / float64(gcd(a, b)))
+	return a * b / gcd(a, b)
 }
 
 func part2(instructions string, networkMap map[string]node) int {
