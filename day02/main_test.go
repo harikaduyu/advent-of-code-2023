@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/harikaduyu/advent-of-code-2023/go/utils"
+	"github.com/harikaduyu/advent-of-code-2023/utils"
 	"github.com/stretchr/testify/assert"
 )
 

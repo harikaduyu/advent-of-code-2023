@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/harikaduyu/advent-of-code-2023/go/utils"
+	"github.com/harikaduyu/advent-of-code-2023/utils"
 )
 
 func getNumWaysCouldWin(time int, distance int) int {

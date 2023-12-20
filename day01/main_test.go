@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/harikaduyu/advent-of-code-2023/go/utils"
+	"github.com/harikaduyu/advent-of-code-2023/utils"
 )
 
 var day = 1

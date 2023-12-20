@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/harikaduyu/advent-of-code-2023/go/utils"
+	"github.com/harikaduyu/advent-of-code-2023/utils"
 )
 
 type coord struct {
@@ -103,48 +103,52 @@ func getNextPipesToVisit(m map[coord]byte, c coord, visited map[coord]bool) []co
 	_, sVisited := visited[s]
 	_, wVisited := visited[w]
 	_, eVisited := visited[e]
+	nOk = nOk && !nVisited && nV != 'S'
+	sOk = sOk && !sVisited && sV != 'S'
+	wOk = wOk && !wVisited && wV != 'S'
+	eOk = eOk && !eVisited && eV != 'S'
 
 	switch m[c] {
 	case '|':
-		if nOk && !nVisited && nV != 'S' {
+		if nOk {
 			next = append(next, n)
 		}
-		if sOk && !sVisited && sV != 'S' {
+		if sOk {
 			next = append(next, s)
 		}
 	case '7':
-		if wOk && !wVisited && wV != 'S' {
+		if wOk {
 			next = append(next, w)
 		}
-		if sOk && !sVisited && sV != 'S' {
+		if sOk {
 			next = append(next, s)
 		}
 	case 'F':
-		if eOk && !eVisited && eV != 'S' {
+		if eOk {
 			next = append(next, e)
 		}
-		if sOk && !sVisited && sV != 'S' {
+		if sOk {
 			next = append(next, s)
 		}
 	case 'J':
-		if wOk && !wVisited && wV != 'S' {
+		if wOk {
 			next = append(next, w)
 		}
-		if nOk && !nVisited && nV != 'S' {
+		if nOk {
 			next = append(next, n)
 		}
 	case 'L':
-		if eOk && !eVisited && eV != 'S' {
+		if eOk {
 			next = append(next, e)
 		}
-		if nOk && !nVisited && nV != 'S' {
+		if nOk {
 			next = append(next, n)
 		}
 	case '-':
-		if wOk && !wVisited && wV != 'S' {
+		if wOk {
 			next = append(next, w)
 		}
-		if eOk && !eVisited && eV != 'S' {
+		if eOk {
 			next = append(next, e)
 		}
 	}

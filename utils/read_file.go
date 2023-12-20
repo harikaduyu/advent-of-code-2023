@@ -15,8 +15,6 @@ func readFile(filename string) string {
 	if err != nil {
 		log.Fatalf("File reading error %s", err)
 	}
-	// fmt.Println("Contents of file:")
-	// fmt.Println(string(data))
 	return string(data)
 
 }
@@ -32,14 +30,12 @@ func dirName() string {
 func ReadInput() string {
 
 	day, err := getDayFromFile()
-
 	if err != nil {
 		panic(err)
 	}
-
 	// write to file
 	dirname := dirName()
-	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d/Q_input.txt", day))
+	filename := filepath.Join(dirname, "..", fmt.Sprintf("/inputs/day%02d/Q_input.txt", day))
 	return readFile(filename)
 }
 
@@ -51,7 +47,7 @@ func ReadExampleInput(part int) string {
 	}
 
 	dirname := dirName()
-	filename := filepath.Join(dirname, "../..", fmt.Sprintf("/inputs/day%02d/example_%d.txt", day, part))
+	filename := filepath.Join(dirname, "..", fmt.Sprintf("/inputs/day%02d/example_%d.txt", day, part))
 	return readFile(filename)
 }
 
