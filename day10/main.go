@@ -178,10 +178,6 @@ func enqueue(queue []coord, elements []coord) []coord {
 
 func dequeue(queue []coord) (coord, []coord) {
 	element := queue[0]
-	if len(queue) == 1 {
-		var tmp = []coord{}
-		return element, tmp
-	}
 	return element, queue[1:]
 }
 
