@@ -25,7 +25,7 @@ func (c coord) west() coord {
 	return coord{i: c.i, j: c.j - 1}
 }
 
-func parse(input string) (map[coord]byte, coord) {
+func parse(input string) (map[coord]byte, coord, int, int) {
 	m := make(map[coord]byte)
 	var start coord
 	matrix := strings.Split(input, "\n")
@@ -38,117 +38,127 @@ func parse(input string) (map[coord]byte, coord) {
 			}
 		}
 	}
-	return m, start
+	return m, start, len(matrix), len(matrix[0])
 }
 
 func getNextPipesToVisitFromS(m map[coord]byte, start coord) []coord {
 	nextPipes := make([]coord, 0)
 	// up
 	north := start.north()
-	n, ok := m[north]
-	northpipes := map[byte]bool{'|': true, '7': true, 'F': true}
-	if ok {
-		_, ok := northpipes[n]
-		if ok {
-			nextPipes = append(nextPipes, north)
-		}
+	n, N := m[north]
+	N = N && (n == '|' || n == '7' || n == 'F')
+	if N {
+		nextPipes = append(nextPipes, north)
 	}
 
 	// down
 	south := start.south()
-	s, ok := m[south]
-	southPipes := map[byte]bool{'|': true, 'J': true, 'L': true}
-	if ok {
-		_, ok := southPipes[s]
-		if ok {
-			nextPipes = append(nextPipes, south)
-		}
+	s, S := m[south]
+	S = S && (s == '|' || s == 'J' || s == 'L')
+	if S {
+		nextPipes = append(nextPipes, south)
 	}
 
 	// left
 	east := start.east()
-	w, ok := m[east]
-	eastPipes := map[byte]bool{'-': true, 'J': true, '7': true}
-	if ok {
-		_, ok := eastPipes[w]
-		if ok {
-			nextPipes = append(nextPipes, east)
-		}
+	e, E := m[east]
+	E = E && (e == '-' || e == 'J' || e == '7')
+	if E {
+		nextPipes = append(nextPipes, east)
 	}
 
 	// right
 	west := start.west()
-	e, ok := m[west]
-	westPipes := map[byte]bool{'-': true, 'L': true, 'F': true}
-	if ok {
-		_, ok := westPipes[e]
-		if ok {
-			nextPipes = append(nextPipes, west)
-		}
+	w, W := m[west]
+	W = W && (w == '-' || w == 'L' || w == 'F')
+	if W {
+		nextPipes = append(nextPipes, west)
 	}
+
 	if len(nextPipes) != 2 {
 		panic(fmt.Sprintf("Failed to find next pipes for S at i:%d, j:%d\nNumber of next pipes should be 2 but got %d.", start.i, start.j, len(nextPipes)))
 	}
+
+	m[start] = shapeOfS(N, S, E, W)
 	return nextPipes
+}
+
+func shapeOfS(N, S, E, W bool) byte {
+	switch {
+	case N && S:
+		return '|'
+	case N && E:
+		return 'L'
+	case N && W:
+		return 'J'
+	case S && E:
+		return 'F'
+	case S && W:
+		return '7'
+	case W && E:
+		return '-'
+	default:
+		panic("Can't find shape of S")
+	}
 }
 
 func getNextPipesToVisit(m map[coord]byte, c coord, visited map[coord]bool) []coord {
 	next := []coord{}
 	n, s, w, e := c.north(), c.south(), c.west(), c.east()
-	nV, nOk := m[n]
-	sV, sOk := m[s]
-	wV, wOk := m[w]
-	eV, eOk := m[e]
+	_, N := m[n]
+	_, S := m[s]
+	_, W := m[w]
+	_, E := m[e]
 	_, nVisited := visited[n]
 	_, sVisited := visited[s]
 	_, wVisited := visited[w]
 	_, eVisited := visited[e]
-	nOk = nOk && !nVisited && nV != 'S'
-	sOk = sOk && !sVisited && sV != 'S'
-	wOk = wOk && !wVisited && wV != 'S'
-	eOk = eOk && !eVisited && eV != 'S'
+	N = N && !nVisited
+	S = S && !sVisited
+	W = W && !wVisited
+	E = E && !eVisited
 
 	switch m[c] {
 	case '|':
-		if nOk {
+		if N {
 			next = append(next, n)
 		}
-		if sOk {
+		if S {
 			next = append(next, s)
 		}
 	case '7':
-		if wOk {
+		if W {
 			next = append(next, w)
 		}
-		if sOk {
+		if S {
 			next = append(next, s)
 		}
 	case 'F':
-		if eOk {
+		if E {
 			next = append(next, e)
 		}
-		if sOk {
+		if S {
 			next = append(next, s)
 		}
 	case 'J':
-		if wOk {
+		if W {
 			next = append(next, w)
 		}
-		if nOk {
+		if N {
 			next = append(next, n)
 		}
 	case 'L':
-		if eOk {
+		if E {
 			next = append(next, e)
 		}
-		if nOk {
+		if N {
 			next = append(next, n)
 		}
 	case '-':
-		if wOk {
+		if W {
 			next = append(next, w)
 		}
-		if eOk {
+		if E {
 			next = append(next, e)
 		}
 	}
@@ -161,42 +171,58 @@ func getNextPipesToVisit(m map[coord]byte, c coord, visited map[coord]bool) []co
 
 func enqueue(queue []coord, elements []coord) []coord {
 	for _, element := range elements {
-
-		queue = append(queue, element) // Simply append to enqueue.
-		// fmt.Println("Enqueued:", element)
+		queue = append(queue, element)
 	}
 	return queue
 }
 
 func dequeue(queue []coord) (coord, []coord) {
-	element := queue[0] // The first element is the one to be dequeued.
+	element := queue[0]
 	if len(queue) == 1 {
 		var tmp = []coord{}
 		return element, tmp
-
 	}
-	return element, queue[1:] // Slice off the element once it is dequeued.
+	return element, queue[1:]
 }
 
-// 7-F7-
-// .FJ|7
-// SJLL7
-// |F--J
-// LJ.LJ
-func part1(m map[coord]byte, start coord) int {
+func part1(m map[coord]byte, start coord) (int, map[coord]byte, map[coord]bool) {
 	toVisit := getNextPipesToVisitFromS(m, start)
-	visited := make(map[coord]bool)
+	visited := map[coord]bool{start: true}
 	var next coord
 	for len(toVisit) > 0 {
-		// fmt.Println("toVisit", toVisit)
-		// fmt.Println("visited", visited)
 		next, toVisit = dequeue(toVisit)
 		nextPipes := getNextPipesToVisit(m, next, visited)
 		visited[next] = true
 		toVisit = enqueue(toVisit, nextPipes)
 	}
-	// fmt.Println("visited", visited)
-	return (len(visited) + 1) / 2
+	return (len(visited)) / 2, m, visited
+}
+
+func part2(m map[coord]byte, visited map[coord]bool, cL, rL int) int {
+	// make everything that is not the loop, ground '.'
+	for c := range m {
+		_, inLoop := visited[c]
+		if !inLoop {
+			m[c] = '.'
+		}
+	}
+	insideLoop := 0
+	for i := 0; i < cL; i++ {
+		in := false
+		for j := 0; j < rL; j++ {
+			loc := coord{i: i, j: j}
+			val, exist := m[loc]
+			if !exist {
+				panic("Something's wrong with the loop in part2")
+			}
+			if val == '|' || val == 'L' || val == 'J' {
+				in = !in
+			} else if val == '.' && in {
+				insideLoop++
+			}
+		}
+	}
+	return insideLoop
 }
 
 func main() {
@@ -204,15 +230,15 @@ func main() {
 	input := utils.ReadInput()
 	startTime := time.Now()
 
-	m, start := parse(input)
-	res1 := part1(m, start)
+	m, start, c, r := parse(input)
+	res1, m, visited := part1(m, start)
 	endTime := time.Now()
 	fmt.Println("Part1:", res1)
 	fmt.Printf("Part1 took %v\n", endTime.Sub(startTime))
 
-	// startTime = time.Now()
-	// res2 := part2(input)
-	// endTime = time.Now()
-	// fmt.Println("Part2:", res2)
-	// fmt.Printf("Part2 took %v\n", endTime.Sub(startTime))
+	startTime = time.Now()
+	res2 := part2(m, visited, c, r)
+	endTime = time.Now()
+	fmt.Println("Part2:", res2)
+	fmt.Printf("Part2 took %v\n", endTime.Sub(startTime))
 }
