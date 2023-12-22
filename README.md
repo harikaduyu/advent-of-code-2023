@@ -9,3 +9,9 @@ Either set your `AOC_SESSION_COOKIE` env variable or add it into the make comman
 make input DAY=5 AOC_SESSION_COOKIE=your_cookie
 ```
 which will download your puzzle input into `./inputs/day05/Q_input.txt`
+
+To run all the tests:
+
+```bash
+go test ./...
+```
